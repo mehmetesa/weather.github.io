@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hava Durumu</title>
+    <link rel="stylesheet" href="weather.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="weather-app">
+            <header>
+                <h1><i class="fas fa-cloud-sun"></i> Hava Durumu</h1>
+                <div class="search-container">
+                    <input type="text" id="city-input" placeholder="Şehir adı girin...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                    <button id="location-btn" title="Konumumu kullan"><i class="fas fa-map-marker-alt"></i></button>
+                </div>
+            </header>
+
+            <div class="weather-content" id="weather-content">
+                <div class="loading" id="loading" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Yükleniyor...</p>
+                </div>
+
+                <div class="error-message" id="error-message" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p id="error-text"></p>
+                </div>
+
+                <div class="current-weather" id="current-weather" style="display: none;">
+                    <div class="weather-main">
+                        <div class="city-info">
+                            <h2 id="city-name">İstanbul</h2>
+                            <p id="date-time"></p>
+                        </div>
+                        <div class="temperature">
+                            <div class="temp-main">
+                                <span id="temp-value">25</span>
+                                <span class="temp-unit">°C</span>
+                            </div>
+                            <div class="weather-icon" id="weather-icon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                        </div>
+                        <div class="weather-description">
+                            <p id="weather-desc">Açık</p>
+                            <p id="feels-like">Hissedilen: <span id="feels-like-temp">25</span>°C</p>
+                        </div>
+                    </div>
+
+                    <div class="weather-details">
+                        <div class="detail-item">
+                            <i class="fas fa-tint"></i>
+                            <div class="detail-info">
+                                <span class="detail-label">Nem</span>
+                                <span class="detail-value" id="humidity">65%</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-wind"></i>
+                            <div class="detail-info">
+                                <span class="detail-label">Rüzgar</span>
+                                <span class="detail-value" id="wind-speed">15 km/h</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-compress-arrows-alt"></i>
+                            <div class="detail-info">
+                                <span class="detail-label">Basınç</span>
+                                <span class="detail-value" id="pressure">1013 hPa</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-eye"></i>
+                            <div class="detail-info">
+                                <span class="detail-label">Görüş</span>
+                                <span class="detail-value" id="visibility">10 km</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="forecast" id="forecast" style="display: none;">
+                    <h3>5 Günlük Tahmin</h3>
+                    <div class="forecast-list" id="forecast-list"></div>
+                </div>
+            </div>
+
+            <div class="api-info">
+                <p><i class="fas fa-check-circle"></i> Ücretsiz Open-Meteo API kullanılıyor - API key gerektirmez!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="weather.js"></script>
+</body>
+</html>
+
