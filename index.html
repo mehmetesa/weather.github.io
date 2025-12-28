@@ -3,98 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Hava Durumu (Ücretsiz)</title>
+    <title>Premium Weather App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- TASARIM (Öncekiyle Aynı Modern Stil) --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        
+        /* --- CSS (STİL) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #00feba, #5b548a);
-            color: #fff;
+            /* Dinamik hissettiren modern bir gradient */
+            background: linear-gradient(135deg, #1e3c72, #2a5298, #00d2ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .card {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
             padding: 40px;
             width: 90%;
-            max-width: 450px;
+            max-width: 420px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .search { display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
-        
-        .search input {
-            border: none; outline: none; padding: 15px 20px;
-            border-radius: 30px; background: rgba(255, 255, 255, 0.2);
-            color: #fff; font-size: 16px; width: 100%; margin-right: 10px;
+        .search-box {
+            display: flex;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 5px 5px 5px 20px;
+            margin-bottom: 30px;
+            transition: 0.3s;
         }
-        
-        .search input::placeholder { color: rgba(255, 255, 255, 0.7); }
 
-        .search button {
-            border: none; outline: none; background: #fff; color: #333;
-            padding: 15px; border-radius: 50%; cursor: pointer; transition: 0.3s;
+        .search-box:focus-within {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255,255,255,0.1);
         }
-        
-        .search button:hover { background: #00feba; transform: scale(1.1); }
 
-        .weather { display: none; animation: fadeIn 1s ease; }
-        
-        .weather-icon { width: 120px; height: 120px; margin-bottom: 10px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); }
-        
-        .temp { font-size: 60px; font-weight: 600; }
-        .city { font-size: 30px; font-weight: 400; margin-bottom: 20px; text-transform: capitalize; }
-        
-        .details { display: flex; justify-content: space-between; padding: 0 20px; margin-top: 30px; }
-        .col { display: flex; align-items: center; text-align: left; }
-        .col img { width: 30px; margin-right: 10px; filter: invert(1); }
-        .humidity, .wind { font-size: 18px; font-weight: 600; }
-        .col p { font-size: 12px; }
+        input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+        }
 
-        .error { display: none; color: #ffaaaa; margin-top: 10px; font-weight: bold; }
+        input::placeholder { color: rgba(255,255,255,0.6); }
+
+        button {
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button:hover { transform: scale(1.1); background: #00d2ff; }
+
+        .weather-content { display: none; animation: fadeIn 0.8s ease-out; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .weather-icon {
+            width: 140px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+        }
+
+        .temp { font-size: 72px; font-weight: 600; line-height: 1; }
+        .city { font-size: 28px; font-weight: 400; margin-bottom: 25px; }
+
+        .details {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 25px;
+        }
+
+        .col { text-align: center; }
+        .col img { width: 24px; filter: invert(1); margin-bottom: 5px; }
+        .col p { font-size: 18px; font-weight: 600; }
+        .col span { font-size: 12px; opacity: 0.8; display: block; }
+
+        .welcome-msg { opacity: 0.7; font-weight: 300; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <div class="search">
-            <input type="text" placeholder="Şehir adı (örn: Ankara)" spellcheck="false">
-            <button><img src="https://img.icons8.com/ios-filled/50/000000/search--v1.png" width="20"></button>
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Şehir ismini yaz..." spellcheck="false">
+            <button id="searchBtn">
+                <img src="https://img.icons8.com/ios-filled/50/000000/search--v1.png" width="20">
+            </button>
         </div>
-        
-        <div class="error"><p>Şehir bulunamadı!</p></div>
 
-        <div class="weather">
-            <img src="https://cdn-icons-png.flaticon.com/512/869/869869.png" class="weather-icon">
-            <h1 class="temp">--°C</h1>
-            <h2 class="city">--</h2>
+        <div id="welcome" class="welcome-msg">
+            <p>Hava durumunu öğrenmek için bir şehir arayın.</p>
+        </div>
+
+        <div class="weather-content" id="weatherContent">
+            <img src="" alt="Hava Durumu" class="weather-icon" id="mainIcon">
+            <h1 class="temp" id="tempText">--°C</h1>
+            <h2 class="city" id="cityName">--</h2>
+
             <div class="details">
                 <div class="col">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/thermometer.png">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/wind.png">
                     <div>
-                        <p class="humidity">--</p>
-                        <p>Kod</p> </div>
+                        <p id="windText">-- km/s</p>
+                        <span>Rüzgar</span>
+                    </div>
                 </div>
                 <div class="col">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/wind.png">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/compass.png">
                     <div>
-                        <p class="wind">-- km/s</p>
-                        <p>Rüzgar</p>
+                        <p id="dirText">--</p>
+                        <span>Yön</span>
                     </div>
                 </div>
             </div>
@@ -102,78 +155,62 @@
     </div>
 
     <script>
-        const searchBox = document.querySelector(".search input");
-        const searchBtn = document.querySelector(".search button");
-        const weatherIcon = document.querySelector(".weather-icon");
-        
-        // Open-Meteo API URL'leri (API KEY GEREKTİRMEZ)
-        const geocodingUrl = "https://geocoding-api.open-meteo.com/v1/search?count=1&language=tr&format=json&name=";
-        const weatherUrlBase = "https://api.open-meteo.com/v1/forecast?current_weather=true&latitude=";
+        /* --- JAVASCRIPT (MANTIK) --- */
+        const cityInput = document.getElementById('cityInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const weatherContent = document.getElementById('weatherContent');
+        const welcome = document.getElementById('welcome');
 
-        async function checkWeather(city) {
+        async function updateWeather() {
+            const city = cityInput.value.trim();
+            if (!city) return;
+
             try {
-                // 1. Adım: Şehir isminden Enlem ve Boylam bulma (Geocoding)
-                const geoResponse = await fetch(geocodingUrl + city);
-                const geoData = await geoResponse.json();
+                // 1. Şehri bulup koordinatları alalım
+                const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=tr&format=json`);
+                const geoData = await geoRes.json();
 
                 if (!geoData.results) {
-                    document.querySelector(".error").style.display = "block";
-                    document.querySelector(".weather").style.display = "none";
+                    alert("Şehir bulunamadı kanka!");
                     return;
                 }
 
-                const lat = geoData.results[0].latitude;
-                const lon = geoData.results[0].longitude;
-                const cityName = geoData.results[0].name;
+                const { latitude, longitude, name } = geoData.results[0];
 
-                // 2. Adım: Koordinatlara göre hava durumu çekme
-                const weatherResponse = await fetch(`${weatherUrlBase}${lat}&longitude=${lon}`);
-                const weatherData = await weatherResponse.json();
+                // 2. Koordinatlarla hava durumunu çekelim
+                const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+                const weatherData = await weatherRes.json();
+                const current = weatherData.current_weather;
 
-                // Verileri Ekrana Yazma
-                document.querySelector(".city").innerHTML = cityName;
-                document.querySelector(".temp").innerHTML = Math.round(weatherData.current_weather.temperature) + "°C";
-                document.querySelector(".wind").innerHTML = weatherData.current_weather.windspeed + " km/s";
+                // Arayüzü Güncelle
+                document.getElementById('cityName').innerText = name;
+                document.getElementById('tempText').innerText = Math.round(current.temperature) + "°C";
+                document.getElementById('windText').innerText = current.windspeed + " km/s";
+                document.getElementById('dirText').innerText = current.winddirection + "°";
+
+                // İkon Belirleme
+                const icon = document.getElementById('mainIcon');
+                const code = current.weathercode;
                 
-                // WMO Hava Durumu Kodunu ekrana yazdırma (Nem verisi yerine)
-                // OpenMeteo ücretsiz sürümde basit nem verisi vermediği için buraya durum kodu yazdık.
-                const wmoCode = weatherData.current_weather.weathercode;
-                document.querySelector(".humidity").innerHTML = "Kod: " + wmoCode;
+                // WMO Kodlarına göre ikon setleme
+                if (code === 0) icon.src = "https://cdn-icons-png.flaticon.com/512/869/869869.png"; // Güneş
+                else if (code <= 3) icon.src = "https://cdn-icons-png.flaticon.com/512/1163/1163624.png"; // Bulut
+                else if (code >= 51 && code <= 67) icon.src = "https://cdn-icons-png.flaticon.com/512/1163/1163657.png"; // Yağmur
+                else if (code >= 71) icon.src = "https://cdn-icons-png.flaticon.com/512/2315/2315309.png"; // Kar
+                else icon.src = "https://cdn-icons-png.flaticon.com/512/4005/4005901.png"; // Sis/Drizzle
 
-                // İkon Seçimi (WMO Kodlarına Göre)
-                // Kod Listesi: 0=Açık, 1-3=Bulutlu, 45-48=Sis, 51-67=Çiseleme/Yağmur, 71-77=Kar, 95=Fırtına
-                let iconSrc = "";
-                
-                if (wmoCode === 0) {
-                    iconSrc = "https://cdn-icons-png.flaticon.com/512/869/869869.png"; // Güneşli
-                } else if (wmoCode >= 1 && wmoCode <= 3) {
-                    iconSrc = "https://cdn-icons-png.flaticon.com/512/1163/1163624.png"; // Parçalı Bulutlu
-                } else if (wmoCode >= 45 && wmoCode <= 48) {
-                    iconSrc = "https://cdn-icons-png.flaticon.com/512/4005/4005901.png"; // Sisli
-                } else if (wmoCode >= 51 && wmoCode <= 67) {
-                    iconSrc = "https://cdn-icons-png.flaticon.com/512/1163/1163657.png"; // Yağmurlu
-                } else if (wmoCode >= 71 && wmoCode <= 77) {
-                    iconSrc = "https://cdn-icons-png.flaticon.com/512/2315/2315309.png"; // Karlı
-                } else if (wmoCode >= 80 && wmoCode <= 99) {
-                    iconSrc = "https://cdn-icons-png.flaticon.com/512/1146/1146860.png"; // Fırtına/Sağanak
-                } else {
-                    iconSrc = "https://cdn-icons-png.flaticon.com/512/1163/1163624.png"; // Varsayılan
-                }
-                
-                weatherIcon.src = iconSrc;
+                welcome.style.display = "none";
+                weatherContent.style.display = "block";
 
-                document.querySelector(".weather").style.display = "block";
-                document.querySelector(".error").style.display = "none";
-
-            } catch (error) {
-                console.log("Hata:", error);
-                document.querySelector(".error").style.display = "block";
+            } catch (err) {
+                console.error(err);
+                alert("Bir sorun oluştu.");
             }
         }
 
-        searchBtn.addEventListener("click", () => checkWeather(searchBox.value));
-        searchBox.addEventListener("keypress", (e) => {
-            if (e.key === 'Enter') checkWeather(searchBox.value);
+        searchBtn.addEventListener('click', updateWeather);
+        cityInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') updateWeather();
         });
     </script>
 </body>
