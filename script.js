@@ -1,56 +1,44 @@
-const searchInput = document.querySelector('input');
-const searchBtn = document.querySelector('button');
+// Script kısmındaki ikon belirleme bölümünü bu kapsamlı liste ile değiştirdim:
 
-async function getWeatherData(city) {
-    if (!city) return;
-
-    try {
-        // 1. Şehrin koordinatlarını (Enlem/Boylam) bulma
-        const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=tr&format=json`;
-        const geoRes = await fetch(geoUrl);
-        const geoData = await geoRes.json();
-
-        if (!geoData.results) {
-            alert("Şehir bulunamadı, lütfen tekrar deneyin!");
-            return;
-        }
-
-        const { latitude, longitude, name } = geoData.results[0];
-
-        // 2. Koordinatlara göre hava durumunu çekme
-        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=relative_humidity_2m`;
-        const weatherRes = await fetch(weatherUrl);
-        const weatherData = await weatherRes.json();
-
-        updateUI(weatherData.current_weather, name);
-
-    } catch (error) {
-        console.error("Veri çekme hatası:", error);
-    }
-}
-
-function updateUI(data, cityName) {
-    // Şehir ismi ve Sıcaklık
-    document.querySelector('.city-name').textContent = cityName;
-    document.querySelector('.temp').textContent = `${Math.round(data.temperature)}°C`;
-    document.querySelector('.wind-speed').textContent = `${data.windspeed} km/s`;
+function setWeatherIcon(code) {
+    const icon = document.getElementById('mainIcon');
     
-    // Rüzgar yönü için basit bir gösterge (WMO kodu yerine yön)
-    document.querySelector('.wind-direction').textContent = `${data.winddirection}°`;
+    // WMO Hava Durumu Kodları Tam Listesi
+    const iconMap = {
+        // Güneşli / Açık
+        0: "https://cdn-icons-png.flaticon.com/512/869/869869.png",
+        
+        // Parçalı Bulutlu
+        1: "https://cdn-icons-png.flaticon.com/512/1163/1163661.png",
+        2: "https://cdn-icons-png.flaticon.com/512/1163/1163624.png",
+        3: "https://cdn-icons-png.flaticon.com/512/1163/1163624.png",
+        
+        // Sisli
+        45: "https://cdn-icons-png.flaticon.com/512/4005/4005901.png",
+        48: "https://cdn-icons-png.flaticon.com/512/4005/4005901.png",
+        
+        // Çiseleme / Hafif Yağmur
+        51: "https://cdn-icons-png.flaticon.com/512/1163/1163657.png",
+        53: "https://cdn-icons-png.flaticon.com/512/1163/1163657.png",
+        55: "https://cdn-icons-png.flaticon.com/512/1163/1163657.png",
+        
+        // Şiddetli Yağmur / Sağanak
+        61: "https://cdn-icons-png.flaticon.com/512/3351/3351979.png",
+        63: "https://cdn-icons-png.flaticon.com/512/3351/3351979.png",
+        65: "https://cdn-icons-png.flaticon.com/512/3351/3351979.png",
+        
+        // Kar Yağışı
+        71: "https://cdn-icons-png.flaticon.com/512/2315/2315309.png",
+        73: "https://cdn-icons-png.flaticon.com/512/2315/2315309.png",
+        75: "https://cdn-icons-png.flaticon.com/512/2315/2315309.png",
+        77: "https://cdn-icons-png.flaticon.com/512/2315/2315309.png",
+        
+        // Gök Gürültülü Fırtına
+        95: "https://cdn-icons-png.flaticon.com/512/1146/1146860.png",
+        96: "https://cdn-icons-png.flaticon.com/512/1146/1146860.png",
+        99: "https://cdn-icons-png.flaticon.com/512/1146/1146860.png"
+    };
 
-    // Hava Durumu İkonu Değiştirme (WMO Kodlarına Göre)
-    const icon = document.querySelector('.weather-icon');
-    const code = data.weathercode;
-
-    // Basit eşleştirme: 0=Açık, 1-3=Parçalı, 51+=Yağış
-    if (code === 0) icon.src = "https://cdn-icons-png.flaticon.com/512/869/869869.png";
-    else if (code <= 3) icon.src = "https://cdn-icons-png.flaticon.com/512/1163/1163624.png";
-    else if (code >= 51) icon.src = "https://cdn-icons-png.flaticon.com/512/1163/1163657.png";
-    else icon.src = "https://cdn-icons-png.flaticon.com/512/4005/4005901.png";
+    // Eğer kod listede varsa onu kullan, yoksa varsayılan olarak bulutlu göster
+    icon.src = iconMap[code] || "https://cdn-icons-png.flaticon.com/512/1163/1163624.png";
 }
-
-// Tetikleyiciler
-searchBtn.addEventListener('click', () => getWeatherData(searchInput.value));
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') getWeatherData(searchInput.value);
-});
